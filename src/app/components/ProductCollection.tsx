@@ -13,7 +13,7 @@ const ProductCollection = ({products, isCarousel}: {products: Product[], isCarou
         {products.map((product, index) =>(  
            <ProductCard 
            key={index}
-           name={product.name}
+           title={product.title}
            image={product.image}
            price={product.price}
            discount='34'

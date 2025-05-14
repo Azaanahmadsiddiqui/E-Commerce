@@ -3,7 +3,7 @@ import SectionHeader from './SectionHeader'
 import LiveDataTime from '@/components/Timer'
 import ProductCollection from './ProductCollection'
 
-interface Product {
+export interface Product {
      title:string,
      image:string,
      price:number,

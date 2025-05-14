@@ -10,7 +10,6 @@ import {
   AuthenticationDetails,
 } from 'amazon-cognito-identity-js'
 import { isAuthenticated } from '@/lib/auth' 
-import { ChartNoAxesColumnDecreasing } from 'lucide-react'
 // ✅ Cognito Config
 const poolData = {
   UserPoolId: 'us-east-1_JAKllGdKX',
@@ -77,13 +76,13 @@ function Login() {
     if (token) {
       router.replace('/') // redirect if already logged in
     }
-  }, [])
+  }, [router])
 
   useEffect(() => {
   if (isAuthenticated()) {
     router.replace('/')
   }
-}, [])
+}, [router])
 
   return (
     <div className="w-full h-screen flex">
@@ -148,8 +147,12 @@ function Login() {
                     }
                   }
                 }
-              } catch (e) {
-                
+              } catch (error: unknown) {
+                 if (error instanceof Error) {
+                  console.error('Error while processing Google login:', error.message)
+                } else {
+                  console.error('Unknown error during Google login:', error)
+                }
               }
             }, 1000)
           }}
@@ -185,8 +188,12 @@ function Login() {
                     }
                   }
                 }
-              } catch (e) {
-                
+              } catch (error:unknown) {
+                     if (error instanceof Error) {
+                  console.error('Error while processing Google login:', error.message)
+                } else {
+                  console.error('Unknown error during Google login:', error)
+                }
               }
             }, 1000)
           }}

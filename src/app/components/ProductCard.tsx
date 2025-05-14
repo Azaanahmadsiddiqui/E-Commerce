@@ -1,5 +1,4 @@
 import React from 'react'
-import { Product } from "./FlashSales"
 import { Card, CardContent } from '@/components/ui/card'
 import Image from 'next/image'
 interface ProductCardProps {
@@ -13,12 +12,12 @@ interface ProductCardProps {
     isNew: boolean
 }
 
-const ProductCard = ({image, isNew, title, discount, price, orignalPrice, rating, review}: ProductCardProps) => {
+const ProductCard = ({image, title, price, orignalPrice, rating, review}: ProductCardProps) => {
   return (
     <Card className='group relative overflow-hidden'>
         <CardContent className='p-0'>
          <div className="relative aspect-square gap-4">
-         <img fill alt={title} src={image} className='w-full  h-full object-cover'/>
+         <Image fill alt={title} src={image} className='w-full  h-full object-cover'/>
          </div>
          <div className="p-4 ">
             <h1 className='font-medium text-sm mb-1'>{title}</h1>

@@ -1,5 +1,5 @@
 'use client';
-
+import { Button } from '@/components/ui/button'
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation'; // Correct import for Next.js 13+
@@ -13,7 +13,7 @@ const poolData = {
 
 const userPool = new CognitoUserPool(poolData);
 
-const signUpUser = (username: string, password: string, email: string): Promise<any> => {
+const signUpUser = (username: string, password: string, email: string): Promise<CognitoUser | void> => {
   const attributeList: CognitoUserAttribute[] = [];
 
   const emailAttribute = new CognitoUserAttribute({
@@ -24,11 +24,11 @@ const signUpUser = (username: string, password: string, email: string): Promise<
   attributeList.push(emailAttribute);
 
   return new Promise((resolve, reject) => {
-    userPool.signUp(username, password, attributeList, null, (err, result) => {
+    userPool.signUp(username, password, attributeList, [], (err, result) => {
       if (err) {
         reject(err.message || JSON.stringify(err));
       } else {
-        resolve(result);
+        resolve(result?.user);
       }
     });
   });
@@ -91,12 +91,12 @@ const Signup: React.FC = () => {
             className="w-full p-3 border border-gray-300 rounded-lg shadow-sm"
           />
         </div>
-        <button
+        <Button
           className="w-full py-3 bg-red-500 text-white rounded-lg hover:bg-blue-600 transition duration-200"
           onClick={handleSignUp}
         >
           Sign Up
-        </button>
+        </Button>
 
         <p className="mt-6 text-center">
           <Link href="/Login">Have an account? Login</Link>

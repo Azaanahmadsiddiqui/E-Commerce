@@ -6,7 +6,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { Heart, Menu, Search, ShoppingCart, X } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { CognitoUserPool } from 'amazon-cognito-identity-js'
+import { CognitoUserPool, CognitoUserSession } from 'amazon-cognito-identity-js'
 
 // Replace these with your Cognito User Pool and App Client details
 const poolData = {
@@ -25,8 +25,8 @@ const Header = () => {
   useEffect(() => {
     const user = userPool.getCurrentUser()
     if (user) {
-      user.getSession((err: any, session: any) => {
-        if (!err && session.isValid()) {
+      user.getSession((err: Error | null, session: CognitoUserSession | null ) => {
+        if (session && session.isValid()) {
           setUsername(user.getUsername())
         }
       })
@@ -39,7 +39,7 @@ const Header = () => {
           const nameOrEmail = payload.name || payload.email || 'GoogleUser'
           setUsername(nameOrEmail)
         } catch (e) {
-          console.error('Invalid Google token')
+          console.error('Invalid Google token', e)
         }
       }
     }
@@ -87,7 +87,10 @@ const Header = () => {
   return (
     <nav className='w-full border-b-2 border-gray-300 p-4'>
       <div className='max-w-7xl mx-auto flex items-center justify-between'>
+        <Link href={'/'}>
         <h1 className='text-2xl font-bold'>A-A STORE</h1>
+        </Link>
+        
 
         {/* Desktop Navigation */}
         <div className='hidden md:flex gap-4'>
@@ -114,18 +117,18 @@ const Header = () => {
                 >
                   <div className='flex justify-between items-center'>
                     <h3 className='font-bold text-sm'>User Name</h3>
-                    <button onClick={() => setDropdownOpen(false)}>
+                    <Button onClick={() => setDropdownOpen(false)}>
                       <X className='w-4 h-4' />
-                    </button>
+                    </Button>
                   </div>
                   <p className='text-sm text-gray-700'>{username}</p>
 
                   {profileImage && (
                     <div className='flex items-center justify-between text-sm'>
                       <span>Uploaded Picture</span>
-                      <button onClick={resetToDefaultImage}>
+                      <Button onClick={resetToDefaultImage}>
                         <X className='w-4 h-4 text-red-600' />
-                      </button>
+                      </Button>
                     </div>
                   )}
 
@@ -137,6 +140,7 @@ const Header = () => {
                     Upload Picture
                   </Button>
                   <input
+                    placeholder='.'
                     type='file'
                     accept='image/*'
                     className='hidden'
@@ -190,9 +194,9 @@ const Header = () => {
                   {profileImage && (
                     <div className='flex items-center justify-between text-sm'>
                       <span>Uploaded Picture</span>
-                      <button onClick={resetToDefaultImage}>
+                      <Button onClick={resetToDefaultImage}>
                         <X className='w-4 h-4 text-red-600' />
-                      </button>
+                      </Button>
                     </div>
                   )}
                   <Button
@@ -203,6 +207,7 @@ const Header = () => {
                     Upload Picture
                   </Button>
                   <input
+                    placeholder='.'
                     type='file'
                     accept='image/*'
                     className='hidden'
