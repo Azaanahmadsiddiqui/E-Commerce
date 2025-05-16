@@ -75,7 +75,7 @@ function Login() {
   useEffect(() => {
     const token = localStorage.getItem('idToken')
     if (token) {
-      router.replace('/') // redirect if already logged in
+      router.replace('/') 
     }
   }, [router])
 
@@ -87,12 +87,10 @@ function Login() {
 
   return (
     <div className="w-full h-screen flex">
-      {/* Left Side Image */}
       <div className="w-1/2 hidden md:block">
         <Image src="/images/Sideimage.png" alt="Login side" width={600} height={800} className="h-full object-cover" />
       </div>
 
-      {/* Right Side Form */}
       <div className="w-full md:w-1/2 p-12 flex flex-col justify-center">
         <h1 className="text-4xl font-bold mb-6">Login</h1>
         <p className="mb-4 text-gray-600">Login with your email</p>
@@ -119,13 +117,13 @@ function Login() {
           Login
         </button>
 
-        {/* ✅ Google Login Button */}
+        {/* sign in with google */}
         <button
           className="bg-blue-500 hover:bg-blue-600 text-white py-2 w-full rounded mt-4"
           onClick={() => {
             const domain = 'https://a-a-store-login-888.auth.us-east-1.amazoncognito.com' 
             const clientId = '3p17tai7nq1ig2167stb97cduo'
-            const redirectUri = 'https://e-commerce-practice-chi.vercel.app/callback' 
+            const redirectUri = 'http://localhost:3000/auth/callback' 
             const url = `${domain}/oauth2/authorize?identity_provider=Google&response_type=token&client_id=${clientId}&redirect_uri=${redirectUri}&scope=email+openid+profile`
 
             const popup = window.open(url, 'GoogleLogin', 'width=500,height=600')
@@ -161,16 +159,15 @@ function Login() {
           Sign in with Google
         </button>
 
-        {/* ✅ Microsoft Login Button - Updated Only This */}
+   {/* Sign in with Microsoft */}
         <button 
           className="bg-blue-500 hover:bg-blue-600 text-white py-2 w-full rounded mt-4"
           onClick={() => {
             const domain = 'https://a-a-store-login-888.auth.us-east-1.amazoncognito.com' 
             const clientId = '3p17tai7nq1ig2167stb97cduo'
-            const redirectUri = 'https://e-commerce-practice-chi.vercel.app/callback'
+            const redirectUri = 'http://localhost:3000/auth/callback'
 
-            // ✅ Corrected identity_provider=Microsoft as per your Cognito config
-            const url = `${domain}/oauth2/authorize?identity_provider=Microsoft&response_type=token&client_id=${clientId}&redirect_uri=${redirectUri}&scope=email+openid+profile`
+              const url = `${domain}/oauth2/authorize?identity_provider=Microsoft&response_type=token&client_id=${clientId}&redirect_uri=${redirectUri}&scope=email+openid+profile&prompt=select_account`
           
             const popup = window.open(url, 'MicrosoftLogin', 'width=500,height=600')
 
