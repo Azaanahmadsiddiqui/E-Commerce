@@ -10,6 +10,7 @@ import {
   AuthenticationDetails,
 } from 'amazon-cognito-identity-js'
 import { isAuthenticated } from '@/lib/auth' 
+
 // ✅ Cognito Config
 const poolData = {
   UserPoolId: 'us-east-1_JAKllGdKX',
@@ -79,10 +80,10 @@ function Login() {
   }, [router])
 
   useEffect(() => {
-  if (isAuthenticated()) {
-    router.replace('/')
-  }
-}, [router])
+    if (isAuthenticated()) {
+      router.replace('/')
+    }
+  }, [router])
 
   return (
     <div className="w-full h-screen flex">
@@ -124,7 +125,7 @@ function Login() {
           onClick={() => {
             const domain = 'https://a-a-store-login-888.auth.us-east-1.amazoncognito.com' 
             const clientId = '3p17tai7nq1ig2167stb97cduo'
-            const redirectUri = 'http://localhost:3000' 
+            const redirectUri = 'https://e-commerce-practice-chi.vercel.app/callback' 
             const url = `${domain}/oauth2/authorize?identity_provider=Google&response_type=token&client_id=${clientId}&redirect_uri=${redirectUri}&scope=email+openid+profile`
 
             const popup = window.open(url, 'GoogleLogin', 'width=500,height=600')
@@ -143,12 +144,12 @@ function Login() {
                       localStorage.setItem('idToken', idToken)
                       clearInterval(pollTimer)
                       popup.close()
-                      window.location.href = '/' 
+                      window.location.href = url 
                     }
                   }
                 }
               } catch (error: unknown) {
-                 if (error instanceof Error) {
+                if (error instanceof Error) {
                   console.error('Error while processing Google login:', error.message)
                 } else {
                   console.error('Unknown error during Google login:', error)
@@ -159,15 +160,18 @@ function Login() {
         >
           Sign in with Google
         </button>
-        <button
+
+        {/* ✅ Microsoft Login Button - Updated Only This */}
+        <button 
           className="bg-blue-500 hover:bg-blue-600 text-white py-2 w-full rounded mt-4"
           onClick={() => {
             const domain = 'https://a-a-store-login-888.auth.us-east-1.amazoncognito.com' 
             const clientId = '3p17tai7nq1ig2167stb97cduo'
-            const redirectUri = 'http://localhost:3000'
+            const redirectUri = 'https://e-commerce-practice-chi.vercel.app/callback'
 
+            // ✅ Corrected identity_provider=Microsoft as per your Cognito config
             const url = `${domain}/oauth2/authorize?identity_provider=Microsoft&response_type=token&client_id=${clientId}&redirect_uri=${redirectUri}&scope=email+openid+profile`
-            
+          
             const popup = window.open(url, 'MicrosoftLogin', 'width=500,height=600')
 
             const pollTimer = setInterval(() => {
@@ -184,15 +188,15 @@ function Login() {
                       localStorage.setItem('idToken', idToken)
                       clearInterval(pollTimer)
                       popup.close()
-                      window.location.href = '/' 
+                      window.location.href = url
                     }
                   }
                 }
-              } catch (error:unknown) {
-                     if (error instanceof Error) {
-                  console.error('Error while processing Google login:', error.message)
+              } catch (error: unknown) {
+                if (error instanceof Error) {
+                  console.error('Error while processing Microsoft login:', error.message)
                 } else {
-                  console.error('Unknown error during Google login:', error)
+                  console.error('Unknown error during Microsoft login:', error)
                 }
               }
             }, 1000)
